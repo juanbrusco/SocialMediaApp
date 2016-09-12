@@ -37,13 +37,6 @@
         android:layout_below="@+id/btnText"
         android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_below="@+id/btnGetImage"
-        android:layout_centerHorizontal="true" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,4 +44,69 @@
         android:id="@+id/btnImage"
         android:layout_below="@+id/btnGetImage"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/btnImage"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:layout_width="120px"
+        android:layout_height="120px"
+        android:id="@+id/shareTw"
+        android:src="@drawable/share_tw"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="2px"
+        android:scaleType="fitXY"
+        android:background="@null"/>
+
+    <ImageButton
+        android:layout_width="120px"
+        android:layout_height="120px"
+        android:id="@+id/shareFace"
+        android:src="@drawable/share_face"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/shareTw"
+        android:layout_margin="2px"
+        android:scaleType="fitXY"
+        android:background="@null"/>
+
+    <ImageButton
+        android:layout_width="120px"
+        android:layout_height="120px"
+        android:id="@+id/shareInst"
+        android:src="@drawable/share_inst"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/shareFace"
+        android:layout_margin="2px"
+        android:scaleType="fitXY"
+        android:background="@null"/>
+
+    <ImageButton
+        android:layout_width="120px"
+        android:layout_height="120px"
+        android:id="@+id/shareWap"
+        android:src="@drawable/share_wap"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/shareInst"
+        android:layout_margin="2px"
+        android:scaleType="fitXY"
+        android:background="@null"/>
+
+    <ImageButton
+        android:layout_width="120px"
+        android:layout_height="120px"
+        android:id="@+id/shareLinked"
+        android:src="@drawable/share_linked"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/shareWap"
+        android:layout_margin="2px"
+        android:scaleType="fitXY"
+        android:background="@null"/>
+
+
 </RelativeLayout>

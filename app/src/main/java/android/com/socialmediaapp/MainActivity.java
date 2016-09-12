@@ -1,12 +1,12 @@
 package android.com.socialmediaapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,31 +14,114 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.io.File;
+import java.io.IOException;
+
+// Add this to the header of your file:
 
 //paso a paso https://www.codeofaninja.com/2013/02/android-share-intent-example.html
 public class MainActivity extends AppCompatActivity {
 
-    private static int RESULT_LOAD_IMG = 1;
+    private int PICK_IMAGE_REQUEST = 1;
     String imgDecodableString;
+    ImageView imgView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        // botones sociales
+        ImageButton shareTwitter = (ImageButton) findViewById(R.id.shareTw);
+        shareTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // Intent para compartir
+                Intent share = new Intent(Intent.ACTION_SEND);
+                // indicar el tipo de imagen que se va a compartir
+                share.setType("image/*");
+                // obtener el path de la imagen seleccionada (luego de haberla elegido en la galeria en el paso anterior btnGetImage)
+                File imageFileToShare = new File(imgDecodableString);
+                Uri uri = Uri.fromFile(imageFileToShare);
+                share.putExtra(Intent.EXTRA_STREAM, uri);
+                share.setPackage("com.twitter.android");
+                startActivity(Intent.createChooser(share, "Compartir imagen en Twitter"));
             }
         });
+        ImageButton shareFacebook = (ImageButton) findViewById(R.id.shareFace);
+        shareFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Intent para compartir
+                Intent share = new Intent(Intent.ACTION_SEND);
+                // indicar el tipo de imagen que se va a compartir
+                share.setType("image/*");
+                // obtener el path de la imagen seleccionada (luego de haberla elegido en la galeria en el paso anterior btnGetImage)
+                File imageFileToShare = new File(imgDecodableString);
+                Uri uri = Uri.fromFile(imageFileToShare);
+                share.putExtra(Intent.EXTRA_STREAM, uri);
+                share.setPackage("com.facebook.katana");
+                startActivity(Intent.createChooser(share, "Compartir imagen en Facebook"));
+            }
+        });
+        ImageButton shareInstagram = (ImageButton) findViewById(R.id.shareInst);
+        shareInstagram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Intent para compartir
+                Intent share = new Intent(Intent.ACTION_SEND);
+                // indicar el tipo de imagen que se va a compartir
+                share.setType("image/*");
+                // obtener el path de la imagen seleccionada (luego de haberla elegido en la galeria en el paso anterior btnGetImage)
+                File imageFileToShare = new File(imgDecodableString);
+                Uri uri = Uri.fromFile(imageFileToShare);
+                share.putExtra(Intent.EXTRA_STREAM, uri);
+                share.setPackage("com.instagram.android");
+                startActivity(Intent.createChooser(share, "Compartir imagen en Instagram"));
+            }
+        });
+        ImageButton shareWhatsapp = (ImageButton) findViewById(R.id.shareWap);
+        shareWhatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Intent para compartir
+                Intent share = new Intent(Intent.ACTION_SEND);
+                // indicar el tipo de imagen que se va a compartir
+                share.setType("image/*");
+                // obtener el path de la imagen seleccionada (luego de haberla elegido en la galeria en el paso anterior btnGetImage)
+                File imageFileToShare = new File(imgDecodableString);
+                Uri uri = Uri.fromFile(imageFileToShare);
+                share.putExtra(Intent.EXTRA_STREAM, uri);
+                share.setPackage("com.whatsapp");
+                startActivity(Intent.createChooser(share, "Compartir imagen en WhatsApp"));
+            }
+        });
+        ImageButton shareLinkedin = (ImageButton) findViewById(R.id.shareLinked);
+        shareLinkedin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Intent para compartir
+                Intent share = new Intent(Intent.ACTION_SEND);
+                // indicar el tipo de imagen que se va a compartir
+                share.setType("image/*");
+                // obtener el path de la imagen seleccionada (luego de haberla elegido en la galeria en el paso anterior btnGetImage)
+                File imageFileToShare = new File(imgDecodableString);
+                Uri uri = Uri.fromFile(imageFileToShare);
+                share.putExtra(Intent.EXTRA_STREAM, uri);
+                share.setPackage("com.linkedin.android");
+                startActivity(Intent.createChooser(share, "Compartir imagen en LinkedIn"));
+            }
+        });
+
+        // View para la imagen
+        imgView = (ImageView) findViewById(R.id.imageView);
 
         //texto para compartir
         final EditText editText = (EditText) findViewById(R.id.editText);
@@ -62,15 +145,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //intent para abrir la galería y seleccionar la imagen
-                loadImagefromGallery(view);
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);//
+                startActivityForResult(Intent.createChooser(intent, "Select File"),PICK_IMAGE_REQUEST);
+
             }
         });
 
         //compartir Imagen
-        Button btnImage = (Button) findViewById(R.id.btnImage);
-        btnImage.setOnClickListener(new View.OnClickListener() {
+        Button btnShareImage = (Button) findViewById(R.id.btnImage);
+        btnShareImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Intent para compartir
                 Intent share = new Intent(Intent.ACTION_SEND);
                 // indicar el tipo de imagen que se va a compartir
                 share.setType("image/*");
@@ -83,41 +171,38 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void loadImagefromGallery(View view) {
-        // Crear intent para abrir la galeria
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        try {
-            // Cuando se seleccciona la imagen
-            if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
-                // Obtener la imagen del data
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                // Cursor
-                Cursor cursor = getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                // Posicionar el cursor
-                cursor.moveToFirst();
-                // Obtener el path de la imagen seleccionada y asignarlo a la variable que luego leemos al compartir (imgDecodableString en btnImage)
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                imgDecodableString = cursor.getString(columnIndex);
-                cursor.close();
-
-            } else {
-                Toast.makeText(this, "No seleccionó nada",
-                        Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e) {
-            Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
+        if (resultCode == Activity.RESULT_OK) {
+                onSelectFromGalleryResult(data);
         }
-
     }
-        @Override
+
+    @SuppressWarnings("deprecation")
+    private void onSelectFromGalleryResult(Intent data) {
+        Bitmap bm=null;
+        if (data != null) {
+            try {
+                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Uri selectedImage = data.getData();
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(selectedImage,
+        filePathColumn, null, null, null);
+        // Posicionar el cursor
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        //asignar path de la imagen seleccionada
+        imgDecodableString = cursor.getString(columnIndex);
+        //setear imagen al image view
+        imgView.setImageBitmap(bm);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -132,4 +217,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
